@@ -1,10 +1,13 @@
 import pandas as pd
 from datetime import datetime
 
-
+counter  =0
 
 def convert_to_date(inputDate):
     date = datetime.strptime(str(inputDate), '%Y%m%d')
+    global counter
+    counter += 1
+    print(counter)
     return datetime.strftime(date,'%Y-%m-%d')
 
 
@@ -30,13 +33,6 @@ covidDF['county'] = covidDF['county'].astype(str) + ' county'
 # (This currently takes a long time.)
 weatherDF['date'] = weatherDF['date'].apply(convert_to_date)
 
-# For loop to change date, as a backup plan
-# for index, row in weatherDF.iterrows():
-#     try:
-#         weatherDF.loc[weatherDF.index[index], 'date'] = convert_to_date(str(weatherDF.loc[weatherDF.index[index], 'date']))
-#         print(index)
-#     except:
-#         print('Error on row ' + index)
 
 ### Filter ###
 
