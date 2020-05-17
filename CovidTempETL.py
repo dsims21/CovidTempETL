@@ -5,6 +5,7 @@ def convert_to_date(inputDate):
     date = datetime.strptime(str(inputDate), '%Y%m%d')
     return datetime.strftime(date,'%Y-%m-%d')
 
+
 ### EXTRACT ##
 
 # Weather
@@ -13,9 +14,6 @@ weatherDF = pd.read_csv("2020.csv", usecols=[0,1,2,3], names=colnames, header=No
 
 # Ground Stations
 stationsDF = pd.read_csv("ground_station_custom_locations_world.csv",)
-filter = stationsDF["Country"]=="United States of America"
-stationsDF.where(filter, inplace = True)
-stationsDF.dropna(inplace=True)
 
 # Covid19 Cases/Deaths by State/County
 url = 'https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv'
@@ -33,7 +31,16 @@ for index, row in weatherDF.iterrows():
     weatherDF.loc[weatherDF.index[index], 'date'] = datetime.strftime(date,'%Y-%m-%d')
 
 
-# AGGREGATE (Do we need to so some averaging of temps?)
+### Filter ###
+
+# Filter Stations to US only
+filter = stationsDF["Country"]=="United States of America"
+stationsDF.where(filter, inplace = True)
+stationsDF.dropna(inplace=True)
+
+
+### AGGREGATE ### (Do we need to so some averaging of temps?)
+
 
 ### JOIN ###
 
