@@ -1,6 +1,8 @@
 import pandas as pd
 from datetime import datetime
 
+
+
 def convert_to_date(inputDate):
     date = datetime.strptime(str(inputDate), '%Y%m%d')
     return datetime.strftime(date,'%Y-%m-%d')
@@ -25,8 +27,16 @@ covidDF = pd.read_csv(url)
 covidDF['county'] = covidDF['county'].astype(str) + ' county'
 
 # Changing date format to match other files.
-for index, row in weatherDF.iterrows():
-    weatherDF.loc[weatherDF.index[index], 'date'] = convert_to_date(str(weatherDF.loc[weatherDF.index[index], 'date']))
+# (This currently takes a long time.)
+weatherDF['date'] = weatherDF['date'].apply(convert_to_date)
+
+# For loop to change date, as a backup plan
+# for index, row in weatherDF.iterrows():
+#     try:
+#         weatherDF.loc[weatherDF.index[index], 'date'] = convert_to_date(str(weatherDF.loc[weatherDF.index[index], 'date']))
+#         print(index)
+#     except:
+#         print('Error on row ' + index)
 
 ### Filter ###
 
