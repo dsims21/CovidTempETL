@@ -24,22 +24,21 @@ stationsDF = pd.read_csv("ground_station_custom_locations_world.csv",)
 url = 'https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-counties.csv'
 covidDF = pd.read_csv(url)
 
+
+### AGGREGATE ### (Do we need to so some averaging of temps?)
+
+
+### JOIN ###
+
+weatherDF = weatherDF.merge(stationsDF, left_on='station_id', right_on='ID')
+
+
 ### Filter ###
 
-# Filter Stations to US only
-filter = stationsDF["Country"]=="United States of America"
-stationsDF.where(filter, inplace = True)
-stationsDF.dropna(inplace=True)
-
 # Filter to US weather only
-weatherDF = weatherDF.merge(stationsDF, left_on='station_id', right_on='ID')
 filter = weatherDF['Country']=='United States of America'
 weatherDF.where(filter, inplace = True)
 weatherDF.dropna(inplace=True)
-
-#THE ABOVE FILTERS ARE A LITTLE MESSY - THERE IS STILL A FILTER SECTION BELOW TOO.
-
-
 
 ### TRANSFORM ###
 
@@ -50,12 +49,5 @@ covidDF['county'] = covidDF['county'].astype(str) + ' county'
 # (This currently takes a long time.)
 weatherDF['date'] = weatherDF['date'].apply(convert_to_date)
 
-### AGGREGATE ### (Do we need to so some averaging of temps?)
-
-
-### JOIN ###
-
-#Start by left joining
-joinedDF = weatherDF.merge(stationsDF, left_on='station_id', right_on='ID')
 
 print('Done')
