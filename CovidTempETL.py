@@ -3,7 +3,7 @@ from datetime import datetime
 
 counter = 0
 
-def convert_to_date(inputDate):
+def correct_date_format(inputDate):
     global counter
     counter += 1
     print(counter)
@@ -25,10 +25,13 @@ url = 'https://raw.githubusercontent.com/nytimes/covid-19-data/master/us-countie
 covidDF = pd.read_csv(url)
 
 
-### AGGREGATE ### (Do we need to so some averaging of temps?)
+### AGGREGATE ###
+
+# Avg Max Temp by county
 
 
-### JOIN ###
+
+### JOIN WEATHER + STATIONS###
 
 weatherDF = weatherDF.merge(stationsDF, left_on='station_id', right_on='ID')
 
@@ -46,8 +49,8 @@ weatherDF.dropna(inplace=True)
 covidDF['county'] = covidDF['county'].astype(str) + ' county'
 
 # Changing date format to match other files.
-# (This currently takes a long time.)
-weatherDF['date'] = weatherDF['date'].apply(convert_to_date)
+# (This currently takes a long time du to number of records)
+weatherDF['date'] = weatherDF['date'].apply(correct_date_format)
 
 
 print('Done')
